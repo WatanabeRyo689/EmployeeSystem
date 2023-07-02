@@ -4,6 +4,8 @@
 
 <head>
 	<!-- このページ固有で読み込むCSS/JS -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	
 	<title>社員新規登録</title>
 </head>
 
@@ -12,7 +14,7 @@
 	<!-- Page Content -->
 	<div class="container">
 		<h1 class="mt-2 mb-3">ユーザー登録</h1>
-		<form method="post" th:action="@{/userRegister/insert}" th:object="${userForm}">
+		<form method="post" th:action="@{/userRegister/insert}" th:object="${userRegisterForm}">
 			<table aria-label class="table table-bordered table-hover table-sm" id="userList">
 				<tr>
 					<th class="active col-sm-3 align-middle text-center" scope="row">

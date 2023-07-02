@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8" />
-    <title>hello</title>
-  </head>
-  <body>
-    <p th:text="${moji}"></p>
-  </body>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<!-- (1)共通headerで置き換える -->
+
+<head>
+	<!-- (2)このページ固有で読み込むCSS/JS -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>社員情報一覧</title>
+
+	<!-- テーブルソート -->
+</head>
+
+<body>
+	<!-- Page Content -->
+	<div class="container">
+		<h1 class="mt-2">社員情報一覧</h1>
+		<div class="form-inline mt-2">
+			<input class="mr-1" id="all" name="changeList" onclick="changeList()" type="radio">
+			<label class="mr-2" for="全社員">全社員一覧</label>
+			<input checked class="mr-1" id="activeOnly" name="changeList" onclick="changeList('activeOnly')"
+				type="radio">
+			<label class="mr-2" for="現職者">現職者一覧</label>
+			<input class="mr-1" id="deactiveOnly" name="changeList" onclick="changeList('deactiveOnly')" type="radio">
+			<label for="退職者">退職者一覧</label>
+		</div>
+		<div class="form-inline mt-2">
+			<form th:action="@{/userRegister}" method="get">
+					<button class="btn btn-primary" type="submit">新規登録</button>
+				</form>
+		</div>
+		<div class="row mt-3">
+			<div class="col-md-12">
+				<table aria-labelledby class="table table-bordered mt-3 pager-table" id="userTable">
+					<thead>
+						<tr>
+							<th class="text-nowrap"></th>
+							<th class="text-nowrap">社員番号</th>
+							<th class="text-nowrap fixed-column1">氏名</th>
+							<th class="text-nowrap">Eメール</th>
+							<th class="text-nowrap">電話番号</th>
+							<th class="buttons text-nowrap" colspan="4"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class=" userEditForm" th:each="userList, loop : ${userEditForm}">
+							<td class="align-middle text-nowrap number" th:text="${loop.index} + 1"></td>
+							<td class="align-middle text-nowrap" th:text="${userList.userId}"></td>
+							<td class="align-middle text-nowrap fixed-column2" th:text="${userList.userName}"></td>
+							<td class="align-middle" th:text="${userList.mailAddress}"></td>
+							<td class="align-middle" th:text="${userList.phoneNumber}"></td>
+							<td class="align-middle">
+								<form method="post" th:action="@{/userEdit}">
+									<input name="userId" th:value="${userList.userId}" type="hidden">
+									<button name="hensyu" class="buttons btn btn-success btn-sm text-nowrap"
+										type="submit">編集</button>
+								</form>
+							</td>
+							<td class="align-middle">
+								<form method="post" th:action=" @{/userDelete}">
+									<input name="userId" th:value="${userList.userId}" type="hidden">
+									<button name="sakujyo" class="buttons btn btn-danger btn-sm text-nowrap delete"
+										type="submit">削除
+									</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+
+
 </html>

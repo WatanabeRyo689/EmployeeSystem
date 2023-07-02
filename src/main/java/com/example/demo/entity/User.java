@@ -3,7 +3,6 @@ package com.example.demo.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -44,7 +43,7 @@ public class User implements Serializable {
     private Timestamp registrationDateTime;
 
     @Column(name = "update_date_time")
-    private LocalDateTime updateDateTime;
+    private Timestamp updateDateTime;
 
     private String territory;
 
