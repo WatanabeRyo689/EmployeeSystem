@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.User;
 import com.example.demo.form.UserEditForm;
@@ -76,4 +77,17 @@ public class UserController {
         userService.deleteUser(userEditForm.getUserId());
         return "redirect:/userList";
     }
+    
+    @GetMapping("/userListTest")
+	public String testGet(@RequestParam("test") String test, Model model) {
+		model.addAttribute("test", "aa");
+		return "test";
+	}
+    
+    @PostMapping("/userListTest")
+	public String testPost(@RequestParam("test") String test, Model model) {
+		model.addAttribute("test", test);
+		return "test";
+	}
+    
 }
