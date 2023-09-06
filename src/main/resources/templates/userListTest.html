@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>User List</title>
+</head>
+
+<body>
+	<h1>User List</h1>
+
+	<form id="filterForm" th:action="@{/users}" method="get">
+		<form id="filterForm" th:action="@{/users}" method="get">
+			<label><input type="radio" name="active" id="allUsersRadio" value="2" th:checked="${active == 2}">
+				全ユーザー</label>
+			<label><input type="radio" name="active" id="activeUsersRadio" value="0" th:checked="${active == 0}">
+				在籍中</label>
+			<label><input type="radio" name="active" id="retiredUsersRadio" value="1" th:checked="${active == 1}">
+				退職ユーザー</label>
+
+
+			<!-- ページサイズの選択用のセレクトボックス -->
+			<label for="pageSize">ページサイズ:</label>
+			<select id="pageSize" name="size">
+				<option value="10" th:selected="${size == 10}">10</option>
+				<option value="20" th:selected="${size == 20}">20</option>
+				<option value="30" th:selected="${size == 30}">30</option>
+			</select>
+		</form>
+
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<!-- 他のユーザー情報のヘッダを追加 -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${users}">
+					<td th:text="${user.id}"></td>
+					<td th:text="${user.name}"></td>
+					<!-- 他のユーザー情報のセルを追加 -->
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="pagination">
+			<span>Page <span th:text="${users.number}"></span> of <span th:text="${users.totalPages}"></span></span>
+			<ul>
+				<li th:each="page : ${#numbers.sequence(0, users.totalPages - 1)}">
+					<a th:href="@{${'users'}(active=${active}, size=${size}, page=${page})}" th:text="${page + 1}"
+						th:class="${page == users.number ? 'active' : ''}"></a>
+				</li>
+			</ul>
+		</div>
+
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				const filterForm = document.getElementById("filterForm");
+				const allUsersRadio = document.getElementById("allUsersRadio");
+				const activeUsersRadio = document.getElementById("activeUsersRadio");
+				const retiredUsersRadio = document.getElementById("retiredUsersRadio");
+
+				// ラジオボタンの変更イベントを監視
+				allUsersRadio.addEventListener("change", function () {
+					filterForm.submit(); // 全ユーザーを選択した場合、フォームをサブミット
+				});
+
+				activeUsersRadio.addEventListener("change", function () {
+					filterForm.submit(); // 在籍中を選択した場合、フォームをサブミット
+				});
+
+				retiredUsersRadio.addEventListener("change", function () {
+					filterForm.submit(); // 退職ユーザーを選択した場合、フォームをサブミット
+				});
+			});
+
+			document.addEventListener("DOMContentLoaded", function () {
+				const pageSizeSelect = document.getElementById("pageSize");
+				const filterForm = document.getElementById("filterForm");
+
+				pageSizeSelect.addEventListener("change", function () {
+					filterForm.submit(); // セレクトボックスが変更されたときにフォームを送信
+				});
+			});
+		</script>
+</body>
+
+</html>

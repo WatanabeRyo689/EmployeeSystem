@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,18 +18,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.User;
+import com.example.demo.entity.User2;
 import com.example.demo.form.UserEditForm;
 import com.example.demo.form.UserRegisterForm;
+import com.example.demo.repository.UserRepository2;
 import com.example.demo.service.UserService;
 
 @Controller
 public class UserController {
 
 	private final UserService userService;
+	private final UserRepository2 userRepository2;
 
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, UserRepository2 userRepository2) {
 		this.userService = userService;
+		this.userRepository2 = userRepository2;
 	}
 
 	@GetMapping("/userList")
@@ -76,6 +84,24 @@ public class UserController {
     public String deleteUser(@ModelAttribute UserEditForm userEditForm, BindingResult bindingResult) {
         userService.deleteUser(userEditForm.getUserId());
         return "redirect:/userList";
+    }
+    
+    @GetMapping("/users")
+    public String listUsers(Model model,  @RequestParam(name = "active", defaultValue = "2") Integer active,
+    		@RequestParam(name = "size", defaultValue = "10") Integer size, 
+    	    @PageableDefault(size = 10) Pageable pageable) {
+    	Page<User2> users1;
+        //List<User2> users = userRepository2.findByActive(active);
+    	if(active == 2) {
+    		users1 = userRepository2.findAll(pageable);
+    	}else {
+    		users1 = userRepository2.findByActive(active, pageable);
+    	}
+        
+        model.addAttribute("users", users1);
+        model.addAttribute("active", active);
+        model.addAttribute("size", size);
+        return "userListTest";
     }
     
     @GetMapping("/userListTest")
