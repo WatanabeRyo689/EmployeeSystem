@@ -13,17 +13,11 @@ import com.example.demo.form.UserEditForm;
 import com.example.demo.form.UserRegisterForm;
 import com.example.demo.repository.UserRepository;
 
-
-
 @Service
 public class UserService {
 
-	public final UserRepository userRepository;
-
 	@Autowired
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	private UserRepository userRepository;
 
 	/**
 	* 編集ユーザー取得
@@ -45,7 +39,7 @@ public class UserService {
 	public List<User> getUserList() {
 		return userRepository.getUserList();
 	}
-	
+
 	/**
 	* ユーザー登録
 	*
@@ -55,36 +49,61 @@ public class UserService {
 	public User createUser(UserRegisterForm userForm) {
 		User user = new User();
 
-        // ユーザー情報初期設定
-        user.setUserId(userForm.getUserId());
-        user.setUserName(userForm.getUserName());
-        user.setPhoneNumber(userForm.getPhoneNumber());
-        user.setMailAddress(userForm.getMailAddress());
-        user.setJoinDate(userForm.getJoinCompanyDate());
-        user.setActiveFlg(true);
-        user.setRegistrationDateTime(new Timestamp(System.currentTimeMillis()));
-        return userRepository.save(user);
+		// ユーザー情報初期設定
+		user.setUserId(userForm.getUserId());
+		user.setUserName(userForm.getUserName());
+		user.setPhoneNumber(userForm.getPhoneNumber());
+		user.setMailAddress(userForm.getMailAddress());
+		user.setJoinDate(userForm.getJoinCompanyDate());
+		user.setActiveFlg(true);
+		user.setRegistrationDateTime(new Timestamp(System.currentTimeMillis()));
+		return userRepository.save(user);
 	}
-	
-   /**
-    * 編集ユーザー情報セット
-    *
-    * @param userRegisterForm
-    * @return 編集ユーザー情報
-    */
+
+	/**
+	* 編集ユーザー情報セット
+	*
+	* @param userRegisterForm
+	* @return 編集ユーザー情報
+	*/
 	@Transactional
-    public User editUser(UserEditForm userForm) {
-        User editUser = userRepository.getById(userForm.getUserId());
-        editUser.setUserName(userForm.getUserName());
-        editUser.setMailAddress(userForm.getMailAddress());
-        editUser.setPhoneNumber(userForm.getPhoneNumber());
-        editUser.setUpdateDateTime(new Timestamp(System.currentTimeMillis()));
-        return userRepository.save(editUser);
-    }
-    
-    @Transactional
-    public void deleteUser(String userId) {
-        User user = userRepository.getById(userId);
-        userRepository.delete(user);
-    }
+	public User editUser(UserEditForm userForm) {
+		User editUser = userRepository.getById(userForm.getUserId());
+		editUser.setUserName(userForm.getUserName());
+		editUser.setMailAddress(userForm.getMailAddress());
+		editUser.setPhoneNumber(userForm.getPhoneNumber());
+		editUser.setUpdateDateTime(new Timestamp(System.currentTimeMillis()));
+		return userRepository.save(editUser);
+	}
+
+	/**
+	    * ユーザー物理削除
+	    *
+	    * @param userId
+	    */
+	@Transactional
+	public void userDeletePhysical(String userId) {
+		User user = userRepository.getById(userId);
+		userRepository.delete(user);
+	}
+
+	/**
+	    * ユーザー論理削除
+	    *
+	    * @param userId
+	    */
+	@Transactional
+	public void userDeleteLogic(String userId) {
+		userRepository.updateUserActive(userId, 2);
+	}
+
+	/**
+	* 部署ごとのユーザーリスト取得
+	*
+	* @return ユーザーリスト
+	*/
+	@Transactional
+	public List<User> findUsersByDepartmentId(int departmentId) {
+		return userRepository.findUsersByDepartmentId(departmentId);
+	}
 }

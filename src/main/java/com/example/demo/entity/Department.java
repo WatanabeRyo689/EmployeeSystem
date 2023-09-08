@@ -16,12 +16,12 @@ import lombok.Data;
 @Table(name = "department")
 public class Department implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dep_id")
-    private Integer depId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "dep_id")
+	private int depId;
 
-    @Column(name = "dep_name")
-    private String depName;
+	@Column(name = "dep_name")
+	private String depName;
 
 }

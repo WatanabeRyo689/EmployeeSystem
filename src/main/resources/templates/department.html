@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>社員情報一覧</title>
+
+</head>
+
+<body>
+	<div class="container">
+		<h1 class="mt-2">部門別一覧</h1>
+		<div class="row mt-3">
+			<div class="col-md-12">
+				<table aria-labelledby class="table table-bordered mt-3 pager-table" id="userTable">
+					<thead>
+						<tr>
+							<th class="text-nowrap">課番号</th>
+							<th class="text-nowrap">課名</th>
+							<th class="text-nowrap">売上合計</th>
+							<th class="text-nowrap">合計人数</th>
+							<th class="text-nowrap">1人あたりの売り上げ平均値(小数点切捨)</th>
+							<th class="buttons text-nowrap" colspan="4"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class=" departmentFormList" th:each="department, loop : ${departmentFormList}">
+							<td class="align-middle text-nowrap" th:text="${department.depId}"></td>
+							<td class="align-middle text-nowrap" th:text="${department.depName}"></td>
+							<td class="align-middle text-nowrap fixed-column2" th:text="${totalSales}"></td>
+							<td class="align-middle" th:text="${totalNumberOfPeople}"></td>
+							<td class="align-middle" th:text="${averageSales}"></td>
+							<td class="align-middle"><a th:href="@{'/departmentMembers/' + ${department.depId}}">一覧</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+
+
+</html>

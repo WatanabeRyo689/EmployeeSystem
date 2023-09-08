@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>社員情報一覧</title>
+
+</head>
+
+<body>
+	<div class="container">
+
+		<div class="form-inline mt-2">
+			<form th:action="@{/userListTest}" method="post">
+				<input type="hidden" name="test" value="test">
+				<button type="submit" class="btn">testPost</button>
+			</form>
+		</div>
+		
+	</div>
+</body>
+
+
+
+</html>

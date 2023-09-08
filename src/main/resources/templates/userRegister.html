@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
-<!-- 共通headerで置き換える -->
 
 <head>
-	<!-- このページ固有で読み込むCSS/JS -->
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 	
 	<title>社員新規登録</title>
@@ -11,7 +9,6 @@
 
 <body>
 
-	<!-- Page Content -->
 	<div class="container">
 		<h1 class="mt-2 mb-3">ユーザー登録</h1>
 		<form method="post" th:action="@{/userRegister/insert}" th:object="${userRegisterForm}">

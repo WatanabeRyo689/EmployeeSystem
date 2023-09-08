@@ -37,22 +37,23 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class=" userFormList" th:each="userList, loop : ${userFormList}">
+						<tr class=" userFormList" th:each="user, loop : ${userFormList}">
 							<td class="align-middle text-nowrap number" th:text="${loop.index} + 1"></td>
-							<td class="align-middle text-nowrap" th:text="${userList.userId}"></td>
-							<td class="align-middle text-nowrap fixed-column2" th:text="${userList.userName}"></td>
-							<td class="align-middle" th:text="${userList.mailAddress}"></td>
-							<td class="align-middle" th:text="${userList.phoneNumber}"></td>
+							<td class="align-middle text-nowrap" th:text="${user.userId}"></td>
+							<td class="align-middle text-nowrap fixed-column2" th:text="${user.userName}"></td>
+							<td class="align-middle" th:text="${user.mailAddress}"></td>
+							<td class="align-middle" th:text="${user.phoneNumber}"></td>
 							<td class="align-middle">
 								<form method="post" th:action="@{/userEdit}">
-									<input name="userId" th:value="${userList.userId}" type="hidden">
+									<input name="userId" th:value="${user.userId}" type="hidden">
 									<button name="hensyu" class="buttons btn btn-success btn-sm text-nowrap"
 										type="submit">編集</button>
 								</form>
 							</td>
 							<td class="align-middle">
-								<form method="post" th:action=" @{/userDeletePhysical}">
-									<input name="userId" th:value="${userList.userId}" type="hidden">
+								<form method="post" th:action=" @{/userDeleteLogic}" th:object="${userForm}">
+									<input name="userId" th:value="${user.userId}" type="hidden">
+									<input name="department" th:value="${user.department.depId}" type="hidden">
 									<button name="sakujyo" class="buttons btn btn-danger btn-sm text-nowrap delete"
 										type="submit">削除
 									</button>
