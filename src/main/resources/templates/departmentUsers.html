@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 	<title>社員情報一覧</title>
@@ -9,20 +10,30 @@
 <body>
 	<div class="container">
 		<h1 class="mt-2">社員情報一覧</h1>
-		<div class="form-inline mt-2">
-			<input class="mr-1" id="all" name="changeList" onclick="changeList()" type="radio">
-			<label class="mr-2" for="全社員">全社員一覧</label>
-			<input checked class="mr-1" id="activeOnly" name="changeList" onclick="changeList('activeOnly')"
-				type="radio">
-			<label class="mr-2" for="現職者">現職者一覧</label>
-			<input class="mr-1" id="deactiveOnly" name="changeList" onclick="changeList('deactiveOnly')" type="radio">
-			<label for="退職者">退職者一覧</label>
-		</div>
-		<div class="form-inline mt-2">
-			<form th:action="@{/userRegister}" method="get">
-					<button class="btn btn-primary" type="submit">新規登録</button>
-				</form>
-		</div>
+
+		<form id="filterForm" th:action="@{/departmentUser/1}" method="get">
+			<div class="form-inline mt-2">
+				<input class="mr-1" type="radio" name="active" id="allUsersRadio" value="2" th:checked="${active == 2}">
+				<label class="mr-2">全社員一覧</label>
+				<input class="mr-1" type="radio" name="active" id="activeUsersRadio" value="0"
+					th:checked="${active == 0}">
+				<label class="mr-2">現職者一覧</label>
+				<input class="mr-1" type="radio" name="active" id="retiredUsersRadio" value="1"
+					th:checked="${active == 1}">
+				<label class="mr-2">退職者一覧</label>
+
+
+				<!-- ページサイズの選択用のセレクトボックス -->
+				<label for="pageSize">ページサイズ:</label>
+				<select id="pageSize" name="size">
+					<option value="10" th:selected="${size == 10}">10</option>
+					<option value="20" th:selected="${size == 20}">20</option>
+					<option value="30" th:selected="${size == 30}">30</option>
+				</select>
+
+			</div>
+		</form>
+
 		<div class="row mt-3">
 			<div class="col-md-12">
 				<table aria-labelledby class="table table-bordered mt-3 pager-table" id="userTable">
@@ -37,7 +48,9 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class=" userFormList" th:each="user, loop : ${userFormList}">
+						<tr class="userList" th:each="user, loop : ${userFormList}"
+							th:attr="data-status=${user.activeFlg}">
+							<input class="enabled" th:value="${user.activeFlg}" type="hidden">
 							<td class="align-middle text-nowrap number" th:text="${loop.index} + 1"></td>
 							<td class="align-middle text-nowrap" th:text="${user.userId}"></td>
 							<td class="align-middle text-nowrap fixed-column2" th:text="${user.userName}"></td>
@@ -46,7 +59,7 @@
 							<td class="align-middle">
 								<form method="post" th:action="@{/userEdit}">
 									<input name="userId" th:value="${user.userId}" type="hidden">
-									<button name="hensyu" class="buttons btn btn-success btn-sm text-nowrap"
+									<button name="editing" class="buttons btn btn-success btn-sm text-nowrap"
 										type="submit">編集</button>
 								</form>
 							</td>
@@ -54,7 +67,7 @@
 								<form method="post" th:action=" @{/userDeleteLogic}" th:object="${userForm}">
 									<input name="userId" th:value="${user.userId}" type="hidden">
 									<input name="department" th:value="${user.department.depId}" type="hidden">
-									<button name="sakujyo" class="buttons btn btn-danger btn-sm text-nowrap delete"
+									<button name="deletion" class="buttons btn btn-danger btn-sm text-nowrap delete"
 										type="submit">削除
 									</button>
 								</form>
@@ -62,11 +75,22 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<div class="pagination">
+					<span>Page <span th:text="${users.number}"></span> of <span
+							th:text="${users.totalPages}"></span></span>
+					<ul>
+						<li th:each="page : ${#numbers.sequence(0, users.totalPages - 1)}">
+							<a th:href="@{${'users'}(active=${active}, size=${size}, page=${page})}"
+								th:text="${page + 1}" th:class="${page == users.number ? 'active' : ''}"></a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
 </body>
-
+<script th:src="@{/js/departmentUsers.js}" type="text/javascript" th:inline="javascript"></script>
 
 
 </html>

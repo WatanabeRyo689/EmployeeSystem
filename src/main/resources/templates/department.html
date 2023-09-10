@@ -26,10 +26,10 @@
 						<tr class=" departmentFormList" th:each="department, loop : ${departmentFormList}">
 							<td class="align-middle text-nowrap" th:text="${department.depId}"></td>
 							<td class="align-middle text-nowrap" th:text="${department.depName}"></td>
-							<td class="align-middle text-nowrap fixed-column2" th:text="${totalSales}"></td>
-							<td class="align-middle" th:text="${totalNumberOfPeople}"></td>
-							<td class="align-middle" th:text="${averageSales}"></td>
-							<td class="align-middle"><a th:href="@{'/departmentMembers/' + ${department.depId}}">一覧</a></td>
+							<td class="align-middle text-nowrap fixed-column2" th:text="${department.totalSales}"></td>
+							<td class="align-middle" th:text="${department.countUsersByDepId}"></td>
+							<td class="align-middle" th:text="${department.averageSales}"></td>
+							<td class="align-middle"><a th:href="@{'/departmentUsers/' + department.depId}">一覧</a></td>
 						</tr>
 					</tbody>
 				</table>

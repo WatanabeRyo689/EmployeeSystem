@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,14 +49,10 @@ public class UserService {
 	@Transactional
 	public User createUser(UserRegisterForm userForm) {
 		User user = new User();
-
+		
 		// ユーザー情報初期設定
-		user.setUserId(userForm.getUserId());
-		user.setUserName(userForm.getUserName());
-		user.setPhoneNumber(userForm.getPhoneNumber());
-		user.setMailAddress(userForm.getMailAddress());
-		user.setJoinDate(userForm.getJoinCompanyDate());
-		user.setActiveFlg(true);
+		BeanUtils.copyProperties(userForm, user);
+		user.setActiveFlg(1);
 		user.setRegistrationDateTime(new Timestamp(System.currentTimeMillis()));
 		return userRepository.save(user);
 	}

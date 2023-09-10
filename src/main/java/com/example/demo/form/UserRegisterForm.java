@@ -27,6 +27,6 @@ public class UserRegisterForm implements Serializable{
 
     @NotNull(message = "入社日が入力されていません")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date joinCompanyDate; // 入社日
+    private Date joinDate; // 入社日
 
 }

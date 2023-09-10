@@ -28,13 +28,23 @@ public class DepartmentController {
 		for (Department department : departmentList) {
 			DepartmentForm departmentForm = new DepartmentForm();
 			BeanUtils.copyProperties(department, departmentForm);
+			
+			// 合計金額取得
+			Integer totalSales = departmentService.totalSales(department.getDepId());
+			departmentForm.setTotalSales(totalSales);
+			
+			// 合計人数
+			Integer countUsersByDepartmentId = departmentService.countUsersByDepId(department.getDepId());
+			departmentForm.setCountUsersByDepId(countUsersByDepartmentId);
+			
+			// 一人当たりの売上平均値
+			Integer averageSales = totalSales/countUsersByDepartmentId;
+			departmentForm.setAverageSales(averageSales);
+			
 			departmentFormList.add(departmentForm);
 		}
 
 		model.addAttribute("departmentFormList", departmentFormList);
-		model.addAttribute("totalSales", "aa");
-		model.addAttribute("totalNumberOfPeople", "aa");
-		model.addAttribute("averageSales", "aa");
 		return "department";
 	}
 }

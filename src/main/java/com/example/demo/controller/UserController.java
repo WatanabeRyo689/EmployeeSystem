@@ -120,18 +120,35 @@ public class UserController {
 		return "test";
 	}
 
-	// 課ごとのユーザー情報取得(getの場合)
-	@GetMapping("/departmentMembers/{departmentId}")
-	public String listDepartmentMembers(@PathVariable int departmentId, @ModelAttribute UserForm userForm,
+	// 課ごとのユーザー情報取得
+	@GetMapping("/departmentUsers/{departmentId}")
+	public String listDepartmentUsers(@PathVariable int departmentId, @ModelAttribute UserForm userForm,
 			Model model) {
 
-		List<User> departmentMembers = userService.findUsersByDepartmentId(departmentId);
+		List<User> departmentUsers = userService.findUsersByDepartmentId(departmentId);
 
-		List<UserForm> userFormList = getUserFormByUser(departmentMembers);
+		List<UserForm> userFormList = getUserFormByUser(departmentUsers);
 
 		model.addAttribute("userFormList", userFormList);
+		model.addAttribute("departmentId", departmentId);
 		return "departmentUsers";
 	}
+
+	// 課ごとのユーザー情報取得
+	@GetMapping("/departmentUsers/{departmentId}")
+		public String listDepartmentUsers(@PathVariable int departmentId, @ModelAttribute UserForm userForm,
+				Model model, @RequestParam(name = "active", defaultValue = "2") Integer active,
+				        @RequestParam(name = "size", defaultValue = "10") Integer size,
+				        @PageableDefault(size = 10) Pageable pageable) {
+
+			List<User> departmentUsers = userService.findUsersByDepartmentId(departmentId);
+
+			List<UserForm> userFormList = getUserFormByUser(departmentUsers);
+
+			model.addAttribute("userFormList", userFormList);
+			model.addAttribute("departmentId", departmentId);
+			return "departmentUsers";
+		}
 
 	// ユーザー情報論理削除
 	@PostMapping(value = "/userDeleteLogic")

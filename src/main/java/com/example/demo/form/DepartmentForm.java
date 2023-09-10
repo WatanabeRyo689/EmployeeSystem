@@ -10,4 +10,10 @@ public class DepartmentForm implements Serializable {
 	private int depId;
 
 	private String depName;
+	
+	private Integer totalSales;
+	
+	private Integer countUsersByDepId;
+	
+	private Integer averageSales;
 }

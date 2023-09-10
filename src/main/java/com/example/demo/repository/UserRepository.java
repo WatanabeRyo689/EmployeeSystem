@@ -20,6 +20,14 @@ public interface UserRepository extends JpaRepository<User, String> {
 	List<User> findUsersByDepartmentId(int departmentId);
 
 	@Modifying // 更新操作を行うことを宣言
-	@Query(value = "UPDATE User u SET u.department_id = :active WHERE u.user_id = :userId", nativeQuery = true)
-	void updateUserActive(String userId, int active);
+	@Query(value = "UPDATE User u SET u.is_active = :active WHERE u.user_id = :userId", nativeQuery = true)
+	public void updateUserActive(String userId, int active);
+	
+	// 合計金額取得
+	@Query(value = "SELECT SUM(u.sales) FROM User u WHERE u.department_id = :departmentId", nativeQuery = true)
+	public Integer totalSales(int departmentId);
+	
+	// 合計人数
+	@Query(value = "SELECT COUNT(*) FROM User u WHERE u.department_Id = :departmentId", nativeQuery = true)
+	public Integer countUsersByDepId(int departmentId);
 }

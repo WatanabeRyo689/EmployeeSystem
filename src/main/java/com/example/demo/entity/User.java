@@ -37,7 +37,7 @@ public class User implements Serializable {
     private Date joinDate;
 
     @Column(name = "is_active")
-    private boolean activeFlg;
+    private int activeFlg;
 
     @Column(name = "registration_date_time")
     private Timestamp registrationDateTime;
