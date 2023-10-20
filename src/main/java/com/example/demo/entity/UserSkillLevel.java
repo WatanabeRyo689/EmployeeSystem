@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -26,7 +27,7 @@ public class UserSkillLevel {
     @Column(name = "level")
     private int level;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "skill_id", referencedColumnName = "skill_id", insertable = false, updatable = false)
     private Skill skill;
 }

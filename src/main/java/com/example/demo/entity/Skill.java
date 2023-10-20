@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +14,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "skillsheet_skill_m")
-public class Skill {
+public class Skill implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "skill_id")
