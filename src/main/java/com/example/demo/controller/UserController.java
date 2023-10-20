@@ -55,7 +55,7 @@ public class UserController {
 	        return "userRegister";
 	    }
 		//userService.getUser(userForm.getUserId());
-		userService.createUser(userForm);
+		//userService.createUser(userForm);
 
 		model.addAttribute("moji", "hello world!");
 		return "userList";
